@@ -19,7 +19,9 @@ router.post("/upload", upload.single("file"), async (req, res) => {
   try {
     if (!req.file) return res.status(400).json({ error: "No file uploaded" });
 
-    const result = await cloudinary.uploader.upload(req.file.buffer); // ❌ Wrong method (students should fix)
+    const imageBase64 = `data:${req.file.mimetype};base64,${req.file.buffer.toString('base64')}`;
+
+    const result = await cloudinary.uploader.upload(imageBase64);
 
     res.json({ url: result.secure_url });
   } catch (error) {
